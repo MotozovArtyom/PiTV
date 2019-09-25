@@ -3,3 +3,8 @@
 
 # Documentation
 *.ldb
+
+# VSCode
+.settings
+.classpath
+.project
