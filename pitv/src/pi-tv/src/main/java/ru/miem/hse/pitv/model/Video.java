@@ -1,4 +1,4 @@
-package ru.miem.hse.pitv.domain;
+package ru.miem.hse.pitv.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
