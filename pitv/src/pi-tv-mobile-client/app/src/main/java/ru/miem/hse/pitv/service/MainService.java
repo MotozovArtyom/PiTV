@@ -9,6 +9,9 @@ import android.util.Log;
 public class MainService extends IntentService {
 	private static final String TAG = MainService.class.getName();
 
+	/**
+	 * Creates an IntentService.  Invoked by your subclass's constructor.
+	 */
 	public MainService() {
 		super("PiTvService");
 	}
@@ -22,12 +25,28 @@ public class MainService extends IntentService {
 		super(name);
 	}
 
+	/**
+	 *
+	 */
+	@Override
+	public void onCreate() {
+		super.onCreate();
+//		Intent intent = getIN
+	}
+
+	/**
+	 * @param intent
+	 * @return
+	 */
 	@Nullable
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
 
+	/**
+	 * @param intent
+	 */
 	@Override
 	protected void onHandleIntent(@Nullable Intent intent) {
 		Log.i(TAG, "Got intent");
