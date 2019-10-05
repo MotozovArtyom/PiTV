@@ -1,6 +1,7 @@
 package ru.miem.hse.pitv.domain;
 
 public class Video {
+
 	private String url;
 
 	public String getUrl() {
