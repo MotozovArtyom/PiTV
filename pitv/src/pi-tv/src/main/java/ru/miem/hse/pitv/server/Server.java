@@ -53,33 +53,37 @@ public class Server implements Runnable {
 	 */
 	@Override
 	public void run() {
+		log.info("Server starting on port " + this.port);
 		try {
-			log.info("Server starting on port " + this.port);
-			Iterator<SelectionKey> keyIterator;
-			SelectionKey selectionKey;
-			while (this.serverSocket.isOpen()) {
+			serverRun();
+		} finally {
+			closeSelector();
+			closeServerSocket();
+		}
+	}
+
+	private void serverRun() {
+		Iterator<SelectionKey> keyIterator;
+		SelectionKey selectionKey;
+		while (this.serverSocket.isOpen()) {
+			try {
 				selector.select();
 				keyIterator = this.selector.selectedKeys().iterator();
 				while (keyIterator.hasNext()) {
 					selectionKey = keyIterator.next();
 					keyIterator.remove();
-
 					if (selectionKey.isValid()) {
 						if (selectionKey.isAcceptable()) {
 							this.handleAccept(selectionKey);
 						}
-
 						if (selectionKey.isReadable()) {
 							this.handleRead(selectionKey);
 						}
 					}
 				}
+			} catch (IOException e) {
+				log.error("Error while receiving, handling, processing requests", e);
 			}
-		} catch (IOException e) {
-			log.error("Error while receiving, handling, processing requests", e);
-		} finally {
-			closeSelector();
-			closeServerSocket();
 		}
 	}
 
