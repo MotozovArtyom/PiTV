@@ -23,6 +23,7 @@
 				<data android:host="www.youtube.com" android:mimeType="text/*"/>
 			</intent-filter>
 		</activity>
+		<activity android:name=".activity.control.ControlActivity"/>
 		<!--		<service-->
 		<!--				android:name=".service.MainService"-->
 		<!--				tools:ignore="ExportedService">-->
