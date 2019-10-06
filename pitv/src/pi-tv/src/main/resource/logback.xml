@@ -27,7 +27,7 @@
 			<maxFileSize>8MB</maxFileSize>
 		</triggeringPolicy>
 	</appender>
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="R"/>
 		<appender-ref ref="C"/>
 	</root>

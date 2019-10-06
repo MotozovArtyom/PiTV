@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-			xmlns:fx="http://javafx.com/fxml"
-			fx:controller="ru.miem.hse.pitv.controller.VideoController"
-			prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<GridPane xmlns="http://javafx.com/javafx/8.0.2011"
+		  xmlns:fx="http://javafx.com/fxml"
+		  prefHeight="600.0" prefWidth="800.0">
+	<children>
+		<VBox fx:id="container" alignment="CENTER"
+			  GridPane.columnIndex="0" GridPane.rowIndex="0"
+			  GridPane.hgrow="ALWAYS">
 
-</AnchorPane>
+		</VBox>
+	</children>
+</GridPane>
