@@ -44,7 +44,6 @@ public class AppConfig {
 		appVersion = System.getProperty("app.version");
 
 		pitvServerPort = Integer.parseInt(readedProperties.getProperty("pitv.server.port", DEFAULT_PITV_SERVER_PORT));
-
 	}
 
 	/**

@@ -83,6 +83,10 @@ public class App extends Application {
 
 		Platform.setImplicitExit(false);
 		sceneController.navigate();
+
+		primaryStage.setOnCloseRequest((e) -> {
+			shutdown();
+		});
 		primaryStage.show();
 	}
 
@@ -166,6 +170,12 @@ public class App extends Application {
 
 	public static void navigate(String resourcePath) {
 		navigate(load(resourcePath));
+	}
+
+	private void shutdown() {
+		log.info("Application shutdown");
+		videoController.interrupt();
+		Platform.exit();
 	}
 
 	static class DefaultModule extends AbstractModule {
