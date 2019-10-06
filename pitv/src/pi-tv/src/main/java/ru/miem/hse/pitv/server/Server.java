@@ -22,7 +22,6 @@ public class Server implements Runnable {
 
 	private static final Logger log = LoggerFactory.getLogger(Server.class);
 
-	@Inject
 	private AppConfig appConfig;
 
 	private Selector selector;
@@ -36,8 +35,10 @@ public class Server implements Runnable {
 	/**
 	 * @throws IOException
 	 */
-	public Server() throws IOException {
-		port = appConfig.getPitvServerPort();
+	@Inject
+	public Server(AppConfig appConfig) throws IOException {
+		this.appConfig = appConfig;
+		port = this.appConfig.getPitvServerPort();
 		selector = Selector.open();
 		serverSocket = ServerSocketChannel.open();
 		serverSocket.socket().bind(new InetSocketAddress(port));
@@ -75,7 +76,7 @@ public class Server implements Runnable {
 				}
 			}
 		} catch (IOException e) {
-			log.error("");
+			log.error("Error while receiving, handling, processing requests", e);
 		} finally {
 			closeSelector();
 			closeServerSocket();

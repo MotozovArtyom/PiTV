@@ -33,7 +33,9 @@ import org.slf4j.LoggerFactory;
 
 import ru.miem.hse.pitv.controller.SceneController;
 import ru.miem.hse.pitv.controller.VideoController;
+import ru.miem.hse.pitv.server.Server;
 import ru.miem.hse.pitv.util.AppConfig;
+import ru.miem.hse.pitv.util.ThreadPools;
 
 public class App extends Application {
 
@@ -57,10 +59,13 @@ public class App extends Application {
 
 	private final AppConfig appConfig;
 
+	private final Server server;
+
 	public App() {
 		videoController = injector.getInstance(VideoController.class);
 		sceneController = injector.getInstance(SceneController.class);
 		appConfig = injector.getInstance(AppConfig.class);
+		server = injector.getInstance(Server.class);
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -83,6 +88,8 @@ public class App extends Application {
 
 		Platform.setImplicitExit(false);
 		sceneController.navigate();
+
+		ThreadPools.defaultPool().submit(server);
 
 		primaryStage.setOnCloseRequest((e) -> {
 			shutdown();
@@ -175,6 +182,9 @@ public class App extends Application {
 	private void shutdown() {
 		log.info("Application shutdown");
 		videoController.interrupt();
+
+		ThreadPools.defaultPool().shutdown();
+
 		Platform.exit();
 	}
 
