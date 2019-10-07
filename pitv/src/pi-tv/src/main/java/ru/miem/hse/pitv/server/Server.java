@@ -10,9 +10,12 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import javax.inject.Inject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.miem.hse.pitv.model.Command;
 import ru.miem.hse.pitv.util.AppConfig;
 
 /**
@@ -21,6 +24,8 @@ import ru.miem.hse.pitv.util.AppConfig;
 public class Server implements Runnable {
 
 	private static final Logger log = LoggerFactory.getLogger(Server.class);
+
+	private static final Gson GSON = new GsonBuilder().create();
 
 	private AppConfig appConfig;
 
@@ -158,10 +163,11 @@ public class Server implements Runnable {
 			log.info("Read bytes less than 0. Attachments {}", selectionKey.attachment());
 			log.info("Closing channel");
 			channel.close();
-		} else {
-			// TODO: Getting JSON from mobile client;
-			message = builder.toString();
 		}
-		log.debug("Received message: {}", message);
+		// TODO: Getting JSON from mobile client;
+		message = builder.toString();
+		Command command = GSON.fromJson(message, Command.class);
+
+		log.debug("Received message: {}", command);
 	}
 }

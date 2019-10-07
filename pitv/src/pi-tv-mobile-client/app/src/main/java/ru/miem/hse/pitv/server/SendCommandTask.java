@@ -48,7 +48,7 @@ public class SendCommandTask implements Runnable {
 			Log.e(TAG, "SendCommandTask IOException", e);
 		} finally {
 			try {
-				clientChannel.close();
+				clientChannel.shutdownOutput();
 			} catch (IOException e) {
 				Log.e(TAG, "Cannot finally close clientChannel", e);
 			}
