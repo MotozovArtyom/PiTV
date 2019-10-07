@@ -164,7 +164,6 @@ public class Server implements Runnable {
 			log.info("Closing channel");
 			channel.close();
 		}
-		// TODO: Getting JSON from mobile client;
 		message = builder.toString();
 		Command command = GSON.fromJson(message, Command.class);
 
