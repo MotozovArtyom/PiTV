@@ -89,6 +89,7 @@ public class App extends Application {
 		Platform.setImplicitExit(false);
 		sceneController.navigate();
 
+		// Starting server process
 		ThreadPools.defaultPool().submit(server);
 
 		primaryStage.setOnCloseRequest((e) -> {
@@ -127,6 +128,38 @@ public class App extends Application {
 		if (shouldCreateFile) {
 			Files.copy(is, targetPropertiesPath, StandardCopyOption.REPLACE_EXISTING);
 		}
+	}
+
+	public static URL getLocalFileUrl(String fileName) {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		URL url = classLoader.getResource(fileName);
+		if (url == null) {
+			throw new RuntimeException("Resource not found: " + fileName);
+		}
+
+		return url;
+	}
+
+	public static String getJsScript(String fileName) {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		URL url = classLoader.getResource(fileName);
+		if (url == null) {
+			throw new RuntimeException("Resource not found: " + fileName);
+		}
+		StringBuilder builder = new StringBuilder();
+		InputStream in = null;
+		try {
+			in = url.openStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			String inputString = null;
+			while ((inputString = reader.readLine()) != null) {
+				builder.append(inputString);
+				builder.append("\n");
+			}
+		} catch (IOException e) {
+			return null;
+		}
+		return builder.toString();
 	}
 
 	public static Parent load(String resourcePath) {

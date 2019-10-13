@@ -8,6 +8,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.Objects;
 import javax.inject.Inject;
 
 import com.google.gson.Gson;
@@ -16,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.miem.hse.pitv.model.Command;
+import ru.miem.hse.pitv.model.CommandType;
+import ru.miem.hse.pitv.model.Video;
+import ru.miem.hse.pitv.model.VideoModel;
 import ru.miem.hse.pitv.util.AppConfig;
 
 /**
@@ -29,6 +33,8 @@ public class Server implements Runnable {
 
 	private AppConfig appConfig;
 
+	private VideoModel videoModel;
+
 	private Selector selector;
 
 	private ServerSocketChannel serverSocket;
@@ -41,8 +47,12 @@ public class Server implements Runnable {
 	 * @throws IOException
 	 */
 	@Inject
-	public Server(AppConfig appConfig) throws IOException {
+	public Server(AppConfig appConfig, VideoModel videoModel) throws IOException {
+		Objects.requireNonNull(appConfig);
+		Objects.requireNonNull(videoModel);
+
 		this.appConfig = appConfig;
+		this.videoModel = videoModel;
 		port = this.appConfig.getPitvServerPort();
 		selector = Selector.open();
 		serverSocket = ServerSocketChannel.open();
@@ -167,6 +177,28 @@ public class Server implements Runnable {
 		message = builder.toString();
 		Command command = GSON.fromJson(message, Command.class);
 
+		if (command == null) {
+			log.debug("Command is null");
+			return;
+		}
+
+		if (command.getCommandType() == CommandType.PLAY) {
+			handlePlayCommand(command);
+		}
+
 		log.debug("Received message: {}", command);
+	}
+
+	private void handlePlayCommand(Command command) {
+		if (command.getVideo() == null) {
+			log.error("CommandType == PLAY, but video is null");
+			throw new ServerException("CommandType == PLAY, but video is null");
+		}
+		Video newVideo = command.getVideo();
+
+		String processedUrl = VideoModel.processUrl(newVideo.getUrl());
+		newVideo.setUrl(processedUrl);
+
+		videoModel.setCurrentVideo(newVideo);
 	}
 }
