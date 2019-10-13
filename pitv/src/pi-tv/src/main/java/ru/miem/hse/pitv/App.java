@@ -41,8 +41,6 @@ public class App extends Application {
 
 	public static final Logger log = LoggerFactory.getLogger(App.class.getName());
 
-	public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
-
 	public static final Path APP_DIR = Paths.get(System.getProperty("user.home"), ".PiTV");
 
 	public static final String PROPERTIES_FILE = "app.properties";
@@ -61,6 +59,9 @@ public class App extends Application {
 
 	private final Server server;
 
+	/**
+	 * Initialize all controller and application config objects
+	 */
 	public App() {
 		videoController = injector.getInstance(VideoController.class);
 		sceneController = injector.getInstance(SceneController.class);
@@ -68,14 +69,25 @@ public class App extends Application {
 		server = injector.getInstance(Server.class);
 	}
 
+	/**
+	 * Start point for application
+	 *
+	 * @param args arguments that passed in start
+	 * @throws IOException thrown if in initialize process have file system problem
+	 */
 	public static void main(String[] args) throws IOException {
 		log.info("Application started");
 		setupDefaultProperties();
 		launch(args);
 	}
 
+	/**
+	 * Start point for desktop application
+	 *
+	 * @param primaryStage contain main stage, that will render all widgets
+	 */
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		log.info("App version: {}", appConfig.getAppVersion());
 
 		MAIN_SCENE = new Scene(App.load("fxml/video.fxml"));
@@ -98,6 +110,11 @@ public class App extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * Initializer. Find or create properties file in user directory
+	 *
+	 * @throws IOException thrown if default resource file not found
+	 */
 	private static void setupDefaultProperties() throws IOException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		InputStream is = null;
@@ -130,6 +147,12 @@ public class App extends Application {
 		}
 	}
 
+	/**
+	 * Find resource path in jar by file name
+	 *
+	 * @param fileName file name for loading
+	 * @return URL to packaged into jar file
+	 */
 	public static URL getLocalFileUrl(String fileName) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		URL url = classLoader.getResource(fileName);
@@ -140,6 +163,12 @@ public class App extends Application {
 		return url;
 	}
 
+	/**
+	 * Loading JavaScript code from file
+	 *
+	 * @param fileName file that contain JavaScript code
+	 * @return JavaScript code
+	 */
 	public static String getJsScript(String fileName) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		URL url = classLoader.getResource(fileName);
@@ -162,10 +191,23 @@ public class App extends Application {
 		return builder.toString();
 	}
 
+	/**
+	 * Load widget from file
+	 *
+	 * @param resourcePath file name or path for loading
+	 * @return widget for rendering
+	 */
 	public static Parent load(String resourcePath) {
 		return load(resourcePath, null);
 	}
 
+	/**
+	 * Load widget from file
+	 *
+	 * @param resourcePath file name or path for loading
+	 * @param controller   the FX controller that will contain that object
+	 * @return widget for rendering
+	 */
 	public static Parent load(String resourcePath, Object controller) {
 		Objects.requireNonNull(resourcePath);
 
@@ -197,6 +239,11 @@ public class App extends Application {
 		return node;
 	}
 
+	/**
+	 * Render widget in scene
+	 *
+	 * @param next - widget for rendering
+	 */
 	public static void navigate(Node next) {
 		Objects.requireNonNull(next);
 		if (MAIN_SCENE == null)
@@ -208,19 +255,31 @@ public class App extends Application {
 		}
 	}
 
+	/**
+	 * Find file in <i>resourcePath</i> and render it in main scene
+	 *
+	 * @param resourcePath - file name or path to file for render
+	 */
 	public static void navigate(String resourcePath) {
 		navigate(load(resourcePath));
 	}
 
+	/**
+	 * Stopping all internal thread pools. Closing application
+	 */
 	private void shutdown() {
 		log.info("Application shutdown");
 		videoController.interrupt();
 
 		ThreadPools.defaultPool().shutdown();
+		ThreadPools.defaultScheduler().shutdown();
 
 		Platform.exit();
 	}
 
+	/**
+	 * Module class for Guice injecting
+	 */
 	static class DefaultModule extends AbstractModule {
 
 		@Override
@@ -229,6 +288,9 @@ public class App extends Application {
 		}
 	}
 
+	/**
+	 * Class Loader Provider (for Guice injecting)
+	 */
 	static class FXMLLoaderProvider implements Provider<FXMLLoader> {
 
 		private final Injector injector;

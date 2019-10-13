@@ -21,17 +21,29 @@ import ru.miem.hse.pitv.model.Video;
 import ru.miem.hse.pitv.model.VideoModel;
 import ru.miem.hse.pitv.util.ThreadPools;
 
+/**
+ * View class. Representing videos on desktop application
+ */
 @Singleton
 public class VideoView {
 
 	private static final Logger log = LoggerFactory.getLogger(VideoView.class);
 
+	/**
+	 * Model objects. Through the object view class receiving current video
+	 */
 	@Inject
 	private VideoModel videoModel;
 
+	/**
+	 * WebView attribute. Load and rendering local and remote HTTP resources
+	 */
 	@FXML
 	private WebView web;
 
+	/**
+	 * FX Initialize method
+	 */
 	@FXML
 	public void initialize() {
 		currentVideoChanged(videoModel.currentVideo.get());
@@ -40,8 +52,13 @@ public class VideoView {
 				Platform.runLater(() -> currentVideoChanged(newValue)));
 	}
 
-	public void currentVideoChanged(Video newValue) {
-		if (newValue == null) {
+	/**
+	 * Handling new video. If video is null then WebView will render
+	 * message in screen
+	 * @param video
+	 */
+	public void currentVideoChanged(Video video) {
+		if (video == null) {
 			URL url = App.getLocalFileUrl("html/blank.html");
 			web.getEngine().load(url.toString());
 		} else {
