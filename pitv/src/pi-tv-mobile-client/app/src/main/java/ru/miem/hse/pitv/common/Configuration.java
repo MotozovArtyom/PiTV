@@ -11,7 +11,7 @@ public class Configuration {
 		/**
 		 *
 		 */
-		public static final String ADDRESS = "192.168.1.3";
+		public static final String ADDRESS = "10.110.124.209";
 
 		/**
 		 *
