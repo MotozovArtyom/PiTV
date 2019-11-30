@@ -17,22 +17,19 @@
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
+<!--			<intent-filter>-->
+<!--				<action android:name="android.intent.action.SEND"/>-->
+<!--				<category android:name="android.intent.category.DEFAULT"/>-->
+<!--				<data android:host="www.youtube.com" android:mimeType="text/*"/>-->
+<!--			</intent-filter>-->
+		</activity>
+		<activity android:name=".activity.control.ControlActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.SEND"/>
 				<category android:name="android.intent.category.DEFAULT"/>
 				<data android:host="www.youtube.com" android:mimeType="text/*"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".activity.control.ControlActivity"/>
-		<!--		<service-->
-		<!--				android:name=".service.MainService"-->
-		<!--				tools:ignore="ExportedService">-->
-		<!--			<intent-filter>-->
-		<!--				<action android:name="android.intent.action.SEND"/>-->
-		<!--				<category android:name="android.intent.category.DEFAULT"/>-->
-		<!--				<data android:host="www.youtube.com" android:mimeType="text/*"/>-->
-		<!--			</intent-filter>-->
-		<!--		</service>-->
 	</application>
 
 </manifest>

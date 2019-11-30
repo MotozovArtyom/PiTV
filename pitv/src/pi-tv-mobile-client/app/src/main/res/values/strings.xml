@@ -2,4 +2,11 @@
 	<string name="app_name">pi-tv-mobile-client</string>
 	<string name="testVideoUrl">http://VIDEOURL.CROM</string>
 	<string name="testVideoName">Video Name Example</string>
+	<string name="stop">Stop</string>
+	<string name="rewind">Rewind</string>
+	<string name="play">Play</string>
+	<string name="pause">Pause</string>
+	<string name="forward">Forward</string>
+	<string name="volume_down">Volume down</string>
+	<string name="volume_up">Volume up</string>
 </resources>
