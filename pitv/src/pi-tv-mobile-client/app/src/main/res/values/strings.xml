@@ -1,3 +1,5 @@
 <resources>
 	<string name="app_name">pi-tv-mobile-client</string>
+	<string name="testVideoUrl">http://VIDEOURL.CROM</string>
+	<string name="testVideoName">Video Name Example</string>
 </resources>
