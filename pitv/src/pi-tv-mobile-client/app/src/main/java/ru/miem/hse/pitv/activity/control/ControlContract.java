@@ -10,5 +10,22 @@ public interface ControlContract {
 
 	interface Presenter extends BasePresenter {
 
+		void setView(View view);
+
+		void sendVolumeUp();
+
+		void sendVolumeDown();
+
+		void sendStop();
+
+		void sendRewind();
+
+		void sendPlay();
+
+		void sendPause();
+
+		void sendForward();
+
+		String getVideoName(String url);
 	}
 }
