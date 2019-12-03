@@ -1,14 +1,9 @@
 package ru.miem.hse.pitv.activity.control;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.miem.hse.pitv.R;
-import ru.miem.hse.pitv.domain.Command;
-import ru.miem.hse.pitv.domain.CommandBuilder;
-import ru.miem.hse.pitv.domain.CommandType;
-import ru.miem.hse.pitv.domain.Video;
-import ru.miem.hse.pitv.server.SendCommandTask;
 
 public class ControlRootFragment extends Fragment implements ControlContract.View {
 
@@ -42,17 +32,21 @@ public class ControlRootFragment extends Fragment implements ControlContract.Vie
 
 	private ImageView volumeUpButton;
 
-	private TextView videoName;
+	private TextView videoNameLabel;
 
-	private TextView viedoUrl;
+	private TextView videoUrlLabel;
 
-	public static ControlRootFragment getInstance() {
+	private String targetUrl;
+
+	public static ControlRootFragment getInstance(String url) {
 		ControlRootFragment fragment = new ControlRootFragment();
+		fragment.targetUrl = url;
 		return fragment;
 	}
 
-	public static ControlRootFragment getInstance(ControlContract.Presenter presenter) {
+	public static ControlRootFragment getInstance(String url, ControlContract.Presenter presenter) {
 		ControlRootFragment fragment = new ControlRootFragment();
+		fragment.targetUrl = url;
 		fragment.setPresenter(presenter);
 		return fragment;
 	}
@@ -83,9 +77,16 @@ public class ControlRootFragment extends Fragment implements ControlContract.Vie
 		volumeUpButton = view.findViewById(R.id.controlVolumeUp);
 		volumeUpButton.setOnClickListener(newOnVolumeUpButtonClickListener());
 
-		videoName = view.findViewById(R.id.videoName);
-		viedoUrl = view.findViewById(R.id.videoUrl);
+		videoNameLabel = view.findViewById(R.id.videoName);
+		videoUrlLabel = view.findViewById(R.id.videoUrl);
+		videoUrlLabel.setText(targetUrl);
 		return view;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		controlPresenter.getVideoName(targetUrl);
 	}
 
 	private View.OnClickListener newOnVolumeUpButtonClickListener() {
@@ -119,5 +120,11 @@ public class ControlRootFragment extends Fragment implements ControlContract.Vie
 	@Override
 	public void setPresenter(ControlContract.Presenter presenter) {
 		this.controlPresenter = presenter;
+		presenter.setView(this);
+	}
+
+	@Override
+	public void updateVideoName(String title) {
+		videoNameLabel.setText(title);
 	}
 }

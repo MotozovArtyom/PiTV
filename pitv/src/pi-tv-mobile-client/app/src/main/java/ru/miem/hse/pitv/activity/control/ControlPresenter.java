@@ -137,8 +137,16 @@ public class ControlPresenter implements ControlContract.Presenter {
 	}
 
 	@Override
-	public String getVideoName(String url) {
-		// TODO Get video name
-		return Strings.empty();
+	public void getVideoName(String url) {
+		Future<String> task = threadPool.submit(new CheckVideoNameTask(url));
+		String title;
+		try {
+			title = task.get();
+		} catch (ExecutionException | InterruptedException e) {
+			Log.w("Cannot get video name", e);
+			title = Strings.empty();
+		}
+
+		controlView.updateVideoName(title);
 	}
 }

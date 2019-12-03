@@ -50,7 +50,7 @@ public class ControlActivity extends AppCompatActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		controlRootFragment = (ControlRootFragment)fragmentManager.findFragmentById(R.id.controlRootFragmentContainer);
 		if (controlRootFragment == null) {
-			controlRootFragment = ControlRootFragment.getInstance();
+			controlRootFragment = ControlRootFragment.getInstance(intent.getStringExtra(Intent.EXTRA_TEXT));
 			fragmentManager.beginTransaction()
 					.add(R.id.controlRootFragmentContainer, controlRootFragment)
 					.commit();
@@ -74,7 +74,7 @@ public class ControlActivity extends AppCompatActivity {
 				.setCommandType(CommandType.PLAY)
 				.build();
 
-		Future<?> task = threadPool.submit(new SendCommandTask(command));
+		threadPool.submit(new SendCommandTask(command));
 //		try {
 //			task.get();
 //		} catch (ExecutionException | InterruptedException e) {

@@ -5,7 +5,7 @@ import ru.miem.hse.pitv.activity.BaseView;
 
 public interface ControlContract {
 	interface View extends BaseView<Presenter> {
-
+		void updateVideoName(String title);
 	}
 
 	interface Presenter extends BasePresenter {
@@ -26,6 +26,6 @@ public interface ControlContract {
 
 		void sendForward();
 
-		String getVideoName(String url);
+		void getVideoName(String url);
 	}
 }
