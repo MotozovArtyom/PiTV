@@ -34,11 +34,11 @@ public class ServiceDiscovery implements Runnable {
 	@Inject
 	public ServiceDiscovery(AppConfig appConfig) throws IOException {
 		this.appConfig = appConfig;
-
 	}
 
 	@Override
 	public void run() {
+		log.info("Started Service Discovery server/service");
 		try {
 			socket = new MulticastSocket(this.appConfig.getPitvServerPort());
 			socket.setReuseAddress(true);

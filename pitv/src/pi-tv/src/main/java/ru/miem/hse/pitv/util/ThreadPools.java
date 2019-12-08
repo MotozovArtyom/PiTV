@@ -9,10 +9,10 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public final class ThreadPools {
 
-	private static final ExecutorService DEFAULT_POOL = Executors.newFixedThreadPool(1);
+	private static final ExecutorService DEFAULT_POOL = Executors.newFixedThreadPool(2);
 
 	private static final ScheduledExecutorService DEFAULT_SCHEDULER
-			= Executors.newScheduledThreadPool(1);
+			= Executors.newScheduledThreadPool(2);
 
 	private ThreadPools() {
 	}
