@@ -23,7 +23,6 @@ public class VideoController {
 		this.videoModel = videoModel;
 
 		videoModel.getCurrentVideo().addListener((observable, oldValue, newValue) -> {
-
 		});
 
 	}

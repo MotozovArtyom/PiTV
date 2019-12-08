@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import ru.miem.hse.pitv.controller.SceneController;
 import ru.miem.hse.pitv.controller.VideoController;
 import ru.miem.hse.pitv.server.Server;
+import ru.miem.hse.pitv.server.ServiceDiscovery;
 import ru.miem.hse.pitv.util.AppConfig;
 import ru.miem.hse.pitv.util.ThreadPools;
 
@@ -60,6 +61,8 @@ public class App extends Application {
 
 	private final Server server;
 
+	private ServiceDiscovery serviceDiscovery;
+
 	/**
 	 * Initialize all controller and application config objects
 	 */
@@ -68,6 +71,7 @@ public class App extends Application {
 		sceneController = injector.getInstance(SceneController.class);
 		appConfig = injector.getInstance(AppConfig.class);
 		server = injector.getInstance(Server.class);
+		serviceDiscovery = injector.getInstance(ServiceDiscovery.class);
 	}
 
 	/**
@@ -105,6 +109,7 @@ public class App extends Application {
 
 		// Starting server process
 		ThreadPools.defaultPool().submit(server);
+		ThreadPools.defaultPool().submit(serviceDiscovery);
 
 		primaryStage.setOnCloseRequest((e) -> {
 			shutdown();
